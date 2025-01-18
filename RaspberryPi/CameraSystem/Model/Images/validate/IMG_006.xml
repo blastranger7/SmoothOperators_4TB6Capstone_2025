@@ -1,0 +1,38 @@
+<annotation>
+	<folder>Images</folder>
+	<filename>Img_006.jpg</filename>
+	<path>/home/pi/SmoothOperators_4TB6Capstone_2025/CameraSystem/Model/Images/Img_006.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>3024</width>
+		<height>4032</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>soda can</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>911</xmin>
+			<ymin>1593</ymin>
+			<xmax>1437</xmax>
+			<ymax>2577</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>soda can</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>2159</xmin>
+			<ymin>1125</ymin>
+			<xmax>2618</xmax>
+			<ymax>1848</ymax>
+		</bndbox>
+	</object>
+</annotation>

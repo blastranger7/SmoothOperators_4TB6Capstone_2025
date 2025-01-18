@@ -1,0 +1,21 @@
+- Have Anaconda installed
+
+- Create new conda env with python 3.9
+conda create -n ENVNAME pip python=3.9
+-Active env
+conda activate ENVNAME
+
+-Install protobuf version 3.20.1
+conda install protobuf==3.20.1
+- Run this
+python use_protobuf.py object_detection\protos protoc
+
+- Setup the TF2 libs needed by running this
+python -m pip install .
+
+- Reinstall numpy version 1.23.4. Needs to be done to fix some errors
+conda install numpy==1.23.4
+
+- Test TF2 by running this
+python object_detection\builders\model_builder_tf2_test.py
+
