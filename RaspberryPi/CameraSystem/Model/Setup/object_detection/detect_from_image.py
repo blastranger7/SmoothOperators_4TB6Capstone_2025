@@ -134,4 +134,5 @@ if __name__ == '__main__':
     run_inference(detection_model, category_index, args.image_path)
 
 # Command to start script
-#  python .\detect_from_image.py -m efficientdet_d0_coco17_tpu-32-8\saved_model -l .\mscoco_label_map.pbtxt -i .\test_images
+#  python .\detect_from_image.py -m efficientdet_d0_coco17_tpu-32\saved_model -l .\mscoco_label_map.pbtxt -i .\test_images
+#  python .\detect_from_image.py -m new_model\saved_model -l .\labelmap.pbtxt -i .\test_images

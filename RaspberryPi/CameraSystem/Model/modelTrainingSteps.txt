@@ -1,0 +1,19 @@
+Make sure the env is setup.
+
+- Add images to the Images folder and their corresponding annotations (.xml), annotations done in labelImg
+- Run xml_to_csv.py 
+python xml_to_csv.py
+
+- Generate TF records
+python generate_tfrecord.py --csv_input=Images/validate_labels.csv --image_dir=Images/validate --output_path=validate.record
+python generate_tfrecord.py --csv_input=Images/train_labels.csv --image_dir=Images/train --output_path=train.record
+
+- Download model if not downloaded.
+- Edit the ssd_efficientdet_d0_512x512_coco17_tpu-8.config file if needed, keep it the same if it worked on your machine
+
+- Start training
+python model_main_tf2.py --pipeline_config_path=ssd_efficientdet_d0_512x512_coco17_tpu-8.config  --model_dir=training --alsologtostderr
+- Stop training when loss/classificatio_loss reaches a value of 0.1 to 0.05. This will make sure we avoid over training
+
+- Export the new mode using:
+python exporter_main_v2.py --trained_checkpoint_dir=training  --pipeline_config_path=ssd_efficientdet_d0_512x512_coco17_tpu-8.config --output_directory inference_graph
