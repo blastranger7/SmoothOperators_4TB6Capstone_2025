@@ -10,7 +10,7 @@ class CommandSender(BoxLayout):
         super().__init__(orientation='vertical', **kwargs)
 
         # Input field
-        self.input_field = TextInput(hint_text='Enter your command', multiline=False)
+        self.input_field = TextInput(hint_text='Enter your commands as separate lines respectively (command, target distance, target angle):', multiline=True)
         self.add_widget(self.input_field)
 
         # Status label
