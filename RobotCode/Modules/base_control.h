@@ -3,6 +3,7 @@
 
 #include "servo_motor.h"
 
-void move_base(s_motor* base_motor, int target_angle);
+void init_base(TIM_HandleTypeDef* timer, int channel);
+void move_base(int target_angle);
 
 #endif
