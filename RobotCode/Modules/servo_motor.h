@@ -4,8 +4,6 @@
 #include "main.h"
 #include "stm32f4xx_hal_tim.h"
 
-#define ccr_per_degree 5.55
-
 typedef struct {
     TIM_HandleTypeDef* timer;
     int channel;

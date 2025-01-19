@@ -1,5 +1,7 @@
 #include "servo_motor.h"
 
+#define ccr_per_degree 5.55
+
 //returns the last angle requested for a given motor 
 int get_motor_position(s_motor* motor) {
     return motor->current_angle;
