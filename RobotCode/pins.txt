@@ -1,0 +1,15 @@
+Pins for all peripherals
+
+Motors (TIM1)
+    Channel 1: PE9
+    Channel 2: PE11
+    Channel 3: PE13
+    Channel 4: PE14
+
+UARTa (UART5)
+    Rx: PD2
+    Tx: PC12
+
+UARTb (UART7)
+    Rx: PE7
+    Tx: PE8
