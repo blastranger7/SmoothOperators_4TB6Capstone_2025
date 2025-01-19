@@ -6,9 +6,13 @@
 
 #define ccr_per_degree 5.55
 
-extern int last_motor_req[4];
+struct s_motor {
+    TIM_HandleTypeDef* timer;
+    int channel;
+    int current_angle;
+};
 
-int get_motor_position(int motor_num);
-void set_motor_position(TIM_HandleTypeDef htim, int channel_num, int angle);
+int get_motor_position(struct s_motor* motor);
+void set_motor_position(struct s_motor* motor, int angle);
 
 #endif
