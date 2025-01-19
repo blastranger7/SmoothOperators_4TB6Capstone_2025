@@ -12,4 +12,5 @@ void set_motor_position(s_motor* motor, int angle) {
     int pulse = 750 + (1 * angle); //convert the requested angle into a ccr value
     
     __HAL_TIM_SET_COMPARE(motor->timer, motor->channel, pulse);
+    motor->current_angle = angle;
 }
