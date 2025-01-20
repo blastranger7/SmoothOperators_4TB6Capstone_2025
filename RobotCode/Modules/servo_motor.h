@@ -5,11 +5,11 @@
 
 typedef struct {
     TIM_HandleTypeDef* timer;
-    int channel;
+    uint32_t channel;
     int current_angle;
 } s_motor;
 
-int get_motor_position(s_motor* motor);
-void set_motor_position(s_motor* motor, int angle);
+int getMotorPosition(s_motor* motor);
+void setMotorPosition(s_motor* motor, int angle);
 
 #endif
