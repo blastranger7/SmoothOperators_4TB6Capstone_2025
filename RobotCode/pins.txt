@@ -1,10 +1,10 @@
 Pins for all peripherals
 
 Motors (TIM1)
-    Channel 1: PE9
-    Channel 2: PE11
-    Channel 3: PE13
-    Channel 4: PE14
+    (base)      Channel 1: PE9
+    (joint 1)   Channel 2: PE11
+    (joint 2)   Channel 3: PE13
+    (joint 3)   Channel 4: PE14
 
 UARTa (UART5)
     Rx: PD2
