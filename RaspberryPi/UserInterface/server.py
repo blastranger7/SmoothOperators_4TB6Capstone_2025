@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
+import serial
 
 app = Flask(__name__)
+
+# Initialize UART
+ser = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
 
 API_KEYS = {
     "object_detection_system": "ods_key",
@@ -15,10 +19,14 @@ def write_to_file():
         data = request.json
         message = data.get('message', 'No message provided')
         
-        # Write data to a text file
+        # Write data to a text file to track changes
         with open('received_data.txt', 'w') as file:
             file.write(message + '\n')
 
+        # Send serial data to microcontroller
+        ser.write(message.encode('utf-8'))
+
+        # Indicate that state of the can should be updated
         with open('updated_can_state.txt', 'w') as can_file:
             can_file.write("Update" + '\n')
         
