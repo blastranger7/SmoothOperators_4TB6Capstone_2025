@@ -4,14 +4,16 @@ uart_port* initUART(UART_HandleTypeDef* port) {
     uart_port* uart;
     
     uart->port = port;
-    uart->rx_buffer = {};
+    uart->rx_buffer[0] = 0;
+    uart->rx_buffer[1] = 0;
+	uart->rx_buffer[2] = 0;
     uart->updated = 0;
 
     return uart;
 }
 
 void sendData(uart_port* uart, uint8_t data) {
-    HAL_UART_Transmit_IT(&uart, &data, 1);
+    HAL_UART_Transmit_IT(uart->port, &data, 1);
 }
 
 void getData(uart_port* uart, uint8_t* data) {

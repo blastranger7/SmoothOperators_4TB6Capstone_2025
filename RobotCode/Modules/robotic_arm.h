@@ -16,8 +16,8 @@ typedef struct {
     uart_port* object_port;
     state system_state;
     status system_status;
-    uart8_t ui_data[3];
-    uart8_t object_data[3];
+    uint8_t ui_data[3];
+    uint8_t object_data[3];
 
 } system;
 

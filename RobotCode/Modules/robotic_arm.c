@@ -6,7 +6,7 @@ system initSystem(TIM_HandleTypeDef* timer, UART_HandleTypeDef* uart_ui, UART_Ha
 
     //init motors
     robot_system.base = initBase(timer, TIM_CHANNEL_1);
-    robot_system.joints = initJoints(timer, joint_channels);
+    initJoints(robot_system.joints, timer, joint_channels);
     
     //init serial ports
     robot_system.ui_port = initUART(uart_ui);
@@ -17,29 +17,15 @@ system initSystem(TIM_HandleTypeDef* timer, UART_HandleTypeDef* uart_ui, UART_Ha
     robot_system.system_status = ready;
 
     //init buffers
-    robot_system.ui_data = {};
-    robot_system.object_data = {};
-}
-
-void runState(system* robot_system) {
-    switch(robot_system->system_state) {
-        case resting:
-            rest(robot_system);
-            break;
-        case return_home:
-            returnHome(robot_system);
-            break;
-        case scan_workspace:
-            scanWorkspace(robot_system);
-            break;
-        case move_can:
-            moveCan(robot_system, robot_system->ui_data[1], robot_system->ui_data[2]);
-            break;
-    }
-}
-
-void updateState(system* robot_system) {
-    stateUpdate(robot_system);
+    robot_system.ui_data[0] = 0;
+	robot_system.ui_data[1] = 0;
+	robot_system.ui_data[2] = 0;
+		
+    robot_system.object_data[0] = 0;
+	robot_system.object_data[1] = 0;
+	robot_system.object_data[2] = 0;
+		
+	return robot_system;
 }
 
 static void setStatus(system* robot_system, status new_status) {
@@ -51,7 +37,7 @@ static void rest(system* robot_system) {
     setStatus(robot_system, ready);
 
     while (!isDataUpdated(robot_system->ui_port)) { continue; }
-    robot_system->ui_data = getData(robot_system->ui_port);
+    getData(robot_system->ui_port, robot_system->ui_data);
 }
 
 static void returnHome(system* robot_system) {
@@ -67,7 +53,7 @@ static void scanWorkspace(system* robot_system) {
     moveBase(robot_system->base, 0);
 
     while (!isDataUpdated(robot_system->object_port)) { continue; }
-    robot_system->object_data = getData(robot_system->object_port);
+    getData(robot_system->object_port, robot_system->object_data);
 }
 
 static void moveCan(system* robot_system, int final_distance, int final_angle) {
@@ -114,4 +100,25 @@ static void stateUpdate(system* robot_system) {
             robot_system->system_state = return_home;
             break;
     }
+}
+
+void runState(system* robot_system) {
+    switch(robot_system->system_state) {
+        case resting:
+            rest(robot_system);
+            break;
+        case return_home:
+            returnHome(robot_system);
+            break;
+        case scan_workspace:
+            scanWorkspace(robot_system);
+            break;
+        case move_can:
+            moveCan(robot_system, robot_system->ui_data[1], robot_system->ui_data[2]);
+            break;
+    }
+}
+
+void updateState(system* robot_system) {
+    stateUpdate(robot_system);
 }

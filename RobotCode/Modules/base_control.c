@@ -11,5 +11,5 @@ s_motor* initBase(TIM_HandleTypeDef* timer, uint32_t channel) {
 }
 
 void moveBase(s_motor* base_motor, int target_angle) {
-    set_motor_position(base_motor, target_angle);
+    setMotorPosition(base_motor, target_angle);
 }

@@ -1,6 +1,7 @@
 #ifndef SERVO_MOTOR_H
 #define SERVO_MOTOR_H
 
+#include "main.h"
 #include "stm32f4xx_hal_tim.h"
 
 typedef struct {

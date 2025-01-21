@@ -3,7 +3,7 @@
 
 #include "servo_motor.h"
 
-s_motor* initJoints(TIM_HandleTypeDef* timer, uint32_t channels[3]);
+void initJoints(s_motor* joints, TIM_HandleTypeDef* timer, uint32_t channels[3]);
 void moveGripper(s_motor* joints, int position_x, int position_y);
 
 #endif

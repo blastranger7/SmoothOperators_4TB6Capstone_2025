@@ -1,6 +1,7 @@
 #ifndef UART_PI_H
 #define UART_PI_H
 
+#include "main.h"
 #include "stm32f4xx_hal_uart.h"
 
 typedef struct {
