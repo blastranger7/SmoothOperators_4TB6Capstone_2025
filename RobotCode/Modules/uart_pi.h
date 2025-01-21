@@ -9,7 +9,7 @@ typedef struct {
     int updated;
 } uart_port; 
 
-uart_port initUART(UART_HandleTypeDef* port);
+uart_port* initUART(UART_HandleTypeDef* port);
 void sendData(uart_port* uart, uint8_t data);
 void getData(uart_port* uart, uint8_t* data);
 int isDataUpdated(uart_port* uart);

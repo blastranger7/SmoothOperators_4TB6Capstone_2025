@@ -1,11 +1,11 @@
 #include "uart_pi.h"
 
-uart_port initUART(UART_HandleTypeDef* port) {
-    uart_port uart;
+uart_port* initUART(UART_HandleTypeDef* port) {
+    uart_port* uart;
     
-    uart.port = port;
-    uart.rx_buffer = {};
-    uart.updated = 0;
+    uart->port = port;
+    uart->rx_buffer = {};
+    uart->updated = 0;
 
     return uart;
 }

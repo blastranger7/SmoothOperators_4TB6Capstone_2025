@@ -10,10 +10,10 @@ typedef enum {resting, return_home, scan_workspace, move_can} state;
 typedef enum {ready, busy, task_done} status;
 
 typedef struct {
-    s_motor base;
+    s_motor* base;
     s_motor joints[3];
-    uart_port ui_port;
-    uart_port object_port;
+    uart_port* ui_port;
+    uart_port* object_port;
     state system_state;
     status system_status;
     uart8_t ui_data[3];

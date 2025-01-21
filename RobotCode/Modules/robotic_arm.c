@@ -19,7 +19,6 @@ system initSystem(TIM_HandleTypeDef* timer, UART_HandleTypeDef* uart_ui, UART_Ha
     //init buffers
     robot_system.ui_data = {};
     robot_system.object_data = {};
-
 }
 
 void runState(system* robot_system) {
@@ -40,16 +39,19 @@ void runState(system* robot_system) {
 }
 
 void updateState(system* robot_system) {
-    stateUpdate(system* robot_system);
+    stateUpdate(robot_system);
 }
 
 static void setStatus(system* robot_system, status new_status) {
     robot_system->system_status = new_status;
-    sendData(robot_system->ui_port, new_status);
+    sendData(robot_system->ui_port, new_status); //send status to UI
 }
 
 static void rest(system* robot_system) {
     setStatus(robot_system, ready);
+
+    while (!isDataUpdated(robot_system->ui_port)) { continue; }
+    robot_system->ui_data = getData(robot_system->ui_port);
 }
 
 static void returnHome(system* robot_system) {
@@ -63,14 +65,17 @@ static void scanWorkspace(system* robot_system) {
     moveBase(robot_system->base, 180);
     moveBase(robot_system->base, -180);
     moveBase(robot_system->base, 0);
+
+    while (!isDataUpdated(robot_system->object_port)) { continue; }
+    robot_system->object_data = getData(robot_system->object_port);
 }
 
 static void moveCan(system* robot_system, int final_distance, int final_angle) {
     // //grab the can
-    // moveBase(object_data[2]);
-    // openGripper();
-    // moveGripper(object_data[1], const_CanHeight)
-    // closeGripper();
+    // moveBase(robot_system->base, robot_system->object_data[2]);
+    // // openGripper();
+    // moveGripper(robot_system->object_data[2], const_CanHeight)
+    // // closeGripper();
 
     // //move and place the can
     // moveGripper(const_RestPosX, const_RestPosY);
