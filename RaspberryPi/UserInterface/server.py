@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
 import serial
+import json
 
 app = Flask(__name__)
-
-# Initialize UART
-ser = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
 
 API_KEYS = {
     "object_detection_system": "ods_key",
@@ -15,21 +13,40 @@ API_KEYS = {
 @app.route('/write', methods=['POST'])
 def write_to_file():
     try:
+        # Initialize UART
+        ser = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
+
         # Get JSON data from the request
-        data = request.json
-        message = data.get('message', 'No message provided')
+        data = request.get_json()   # Python dictionary
+        if not isinstance(data, dict):
+            return {"error": "Expected a dictionary"}, 400
         
-        # Write data to a text file to track changes
+        commands = data.get('message')
+        if not isinstance(commands, list):
+            return {"error": "Expected a list for 'message'"}, 400
+        
+        # Write data to a text file to track most recent changes
         with open('received_data.txt', 'w') as file:
-            file.write(message + '\n')
+            for command in commands:
+                file.write(command + '\n')
+
+        byte_objects = [obj.encode('utf-8') for obj in commands]    # Use python generator to convert every item in list to byteobject
 
         # Send serial data to microcontroller
-        ser.write(message.encode('utf-8'))
+        for byte_object in byte_objects:
+            ser.write(byte_object)
+            ser.write(b'\n')  # Not necessary: Add a newline character as a delimiter
+            print(f"Sent: {byte_object}")
+
+        ser.write(('#').encode('utf-8'))
 
         # Indicate that state of the can should be updated
         with open('updated_can_state.txt', 'w') as can_file:
             can_file.write("Update" + '\n')
         
+        # Close serial connection
+        ser.close()
+
         return {'status': 'success', 'message': 'Data written to file'}, 200
     except Exception as e:
         return {'status': 'error', 'message': str(e)}, 500

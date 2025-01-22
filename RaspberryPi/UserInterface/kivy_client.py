@@ -24,7 +24,9 @@ class CommandSender(BoxLayout):
 
     def send_command(self, instance):
         url = "http://192.168.2.43:5000/write"  # Raspberry Pi's IP
-        data = {"message": self.input_field.text}
+        plain_text = self.input_field.text
+        line_data = plain_text.splitlines()
+        data = {"message": line_data}
 
         try:
             response = requests.post(url, json=data)
