@@ -11,6 +11,9 @@ python generate_tfrecord.py --csv_input=Images/train_labels.csv --image_dir=Imag
 - Download model if not downloaded.
 - Edit the ssd_efficientdet_d0_512x512_coco17_tpu-8.config file if needed, keep it the same if it worked on your machine
 
+- Follow this to make sure it runs on GPU
+https://github.com/tensorflow/models/issues/10739
+
 - Start training
 python model_main_tf2.py --pipeline_config_path=ssd_efficientdet_d0_512x512_coco17_tpu-8.config  --model_dir=training --alsologtostderr
 - Stop training when loss/classificatio_loss reaches a value of 0.1 to 0.05. This will make sure we avoid over training

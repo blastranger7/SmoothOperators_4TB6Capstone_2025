@@ -1,2 +1,8 @@
 *_pb2.py
 RaspberryPi/CameraSystem/Model/Setup/object_detection/outputs
+RaspberryPi/CameraSystem/Model/Setup/object_detection/new_model
+RaspberryPi/CameraSystem/Model/Setup/object_detection/test_images
+RaspberryPi/CameraSystem/Model/Setup/object_detection/labelmap.pbtxt
+.gitignore
+RaspberryPi/CameraSystem/Model/efficientdet_d0_coco17_tpu-32.tar.gz
+RaspberryPi/CameraSystem/Model/ssd_mobilenet_v2_320x320_coco17_tpu-8

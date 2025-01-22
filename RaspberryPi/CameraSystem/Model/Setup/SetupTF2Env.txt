@@ -19,3 +19,6 @@ conda install numpy==1.23.4
 - Test TF2 by running this
 python object_detection\builders\model_builder_tf2_test.py
 
+
+NOTES:
+Changes made to visualization_utils.py in the libs locatio : anaconda3\envs\capstoneModelTraining\Lib\site-packages\object_detection\utils
