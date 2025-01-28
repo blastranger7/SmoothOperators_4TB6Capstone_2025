@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import serial
 import json
+import struct
 
 app = Flask(__name__)
 
@@ -30,15 +31,18 @@ def write_to_file():
             for command in commands:
                 file.write(command + '\n')
 
-        byte_objects = [obj.encode('utf-8') for obj in commands]    # Use python generator to convert every item in list to byteobject
+        # Fix command size
+        commands[0] = commands[0].ljust(10)[:10]
 
-        # Send serial data to microcontroller
-        for byte_object in byte_objects:
-            ser.write(byte_object)
-            ser.write(b'\n')  # Not necessary: Add a newline character as a delimiter
-            print(f"Sent: {byte_object}")
+        # Typecast distance and angle
+        commands[1] = float(commands[1])
+        commands[2] = float(commands[2])
 
-        ser.write(('#').encode('utf-8'))
+        # Fix sized packet created to be sent to MCU
+        packet = struct.pack('<10sff', commands[0].encode('ascii'), commands[1], commands[2])
+
+        # Send serial data to microcontroller (18 bytes total)
+        ser.write(packet)
 
         # Indicate that state of the can should be updated
         with open('updated_can_state.txt', 'w') as can_file:
