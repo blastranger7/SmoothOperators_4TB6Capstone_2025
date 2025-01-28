@@ -1,5 +1,11 @@
 #include "robotic_arm.h"
 
+//dummy values for now
+const int rest_pos_x = 50;
+const int rest_pos_y = 15;
+const int can_height = 10;
+const int rest_angle = 0;
+
 system initSystem(TIM_HandleTypeDef* timer, UART_HandleTypeDef* uart_ui, UART_HandleTypeDef* uart_object) {
     system robot_system;
     uint32_t joint_channels[3] = {TIM_CHANNEL_2, TIM_CHANNEL_3, TIM_CHANNEL_4};
@@ -42,8 +48,8 @@ static void rest(system* robot_system) {
 
 static void returnHome(system* robot_system) {
     //reset the gripper and base positions
-    moveGripper(robot_system->joints, 50, 15); //dummy values for now
-    moveBase(robot_system->base, 0);
+    moveGripper(robot_system->joints, rest_pos_x, rest_pos_y);
+    moveBase(robot_system->base, rest_angle);
 }
 
 static void scanWorkspace(system* robot_system) {
@@ -60,13 +66,13 @@ static void moveCan(system* robot_system, int final_distance, int final_angle) {
     // //grab the can
     // moveBase(robot_system->base, robot_system->object_data[2]);
     // // openGripper();
-    // moveGripper(robot_system->object_data[2], const_CanHeight)
+    // moveGripper(robot_system->object_data[2], can_height)
     // // closeGripper();
 
     // //move and place the can
-    // moveGripper(const_RestPosX, const_RestPosY);
+    // moveGripper(rest_pos_x, rest_pos_y);
     // moveBase(final_angle);
-    // moveGripper(final_distance, const_CanHeight);
+    // moveGripper(final_distance, can_height);
     // openGripper();
 }
 
