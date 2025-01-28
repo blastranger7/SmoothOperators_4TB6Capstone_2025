@@ -1,5 +1,10 @@
 #include "joint_control.h"
 
+//segment lengths
+int a_1 = 250;
+int a_2 = 250;
+int a_3 = 250;
+
 int step_size = 1; //joints will move 1 degree per step
 
 void initJoints(s_motor* joints, TIM_HandleTypeDef* timer, uint32_t channels[3]) {
@@ -11,7 +16,22 @@ void initJoints(s_motor* joints, TIM_HandleTypeDef* timer, uint32_t channels[3])
 }
 
 static void inverseKinematics(int position_x, int position_y, int* positions) {
+    double c_x = (double) position_x - a_3;
+    double c_y = (double) position_y;
+    
+    double U = (double) ((c_x*c_x) + (c_y*c_y) - (a_1*a_1) - (a_2*a_2))/(2*a_1*a_2);
+    double denom = sqrt((c_x*c_x) + (c_y*c_y)); 
+    
+    double alpha = atan2(c_y/denom, c_x/denom);
+    double beta = ((a_1*a_1) + denom - (a_2*a_2))/(2*a_1*denom);
 
+    int theta_1 = (int) (alpha + beta);
+    int theta_2 = (int) atan2(sqrt(1-(U*U)), U);
+    int theta_3 = theta_1 - theta_2;
+
+    *positions = theta_1;
+    *(positions+1) = theta_2;
+    *(positions+2) = theta_3;
 }
 
 static void calculateDistance(s_motor* joints, int position_x, int position_y, int* distances) {
