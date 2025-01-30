@@ -31,15 +31,12 @@ def write_to_file():
             for command in commands:
                 file.write(command + '\n')
 
-        # Fix command size
-        commands[0] = commands[0].ljust(10)[:10]
-
-        # Typecast distance and angle
-        commands[1] = float(commands[1])
-        commands[2] = float(commands[2])
+        # Typecast every element in commands list to integer
+        for command in commands:
+            command = int(command)
 
         # Fix sized packet created to be sent to MCU
-        packet = struct.pack('<10sff', commands[0].encode('ascii'), commands[1], commands[2])
+        packet = struct.pack('III', commands[0], commands[1], commands[2])
 
         # Send serial data to microcontroller (18 bytes total)
         ser.write(packet)
