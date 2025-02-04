@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import serial
 import json
 import struct
+from ctypes import c_uint8
 
 app = Flask(__name__)
 
@@ -15,7 +16,13 @@ API_KEYS = {
 def write_to_file():
     try:
         # Initialize UART
-        ser = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
+        ser = serial.Serial('/dev/serial0', baudrate=115200, timeout=1)
+
+        if ser.is_open:
+            print("Serial connection established successfully.")
+
+        else:
+            print("Failed to open serial port.")
 
         # Get JSON data from the request
         data = request.get_json()   # Python dictionary
@@ -26,17 +33,17 @@ def write_to_file():
         if not isinstance(commands, list):
             return {"error": "Expected a list for 'message'"}, 400
         
+        formatted_commands = [c_uint8(element) for element in commands]
+        
         # Write data to a text file to track most recent changes
         with open('received_data.txt', 'w') as file:
             for command in commands:
-                file.write(command + '\n')
-
-        # Typecast every element in commands list to integer
-        for command in commands:
-            command = int(command)
+                file.write(str(command) + " - type " + str(type(command)) + '\n')
 
         # Fix sized packet created to be sent to MCU
-        packet = struct.pack('III', commands[0], commands[1], commands[2])
+        packet = struct.pack('BBB', formatted_commands[0].value, formatted_commands[1].value, formatted_commands[2].value)
+        print_packet = list(packet)
+        print(print_packet)
 
         # Send serial data to microcontroller (18 bytes total)
         ser.write(packet)
