@@ -5,6 +5,6 @@
 #include "servo_motor.h"
 
 void initBase(TIM_HandleTypeDef* timer, uint32_t channel, s_motor* base_motor);
-void moveBase(s_motor* base_motor, int target_angle);
+void moveBase(s_motor* base_motor, int target_angle, int is_sweep);
  
 #endif
