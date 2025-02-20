@@ -1,15 +1,11 @@
 #include "uart_pi.h"
 
-uart_port* initUART(UART_HandleTypeDef* port) {
-    uart_port* uart;
-    
-    uart->port = port;
-    uart->rx_buffer[0] = 0;
-    uart->rx_buffer[1] = 0;
-	uart->rx_buffer[2] = 0;
-    uart->updated = 0;
-
-    return uart;
+void initUART(UART_HandleTypeDef* port, uart_port* u_port) {
+    u_port->port = port;
+    u_port->rx_buffer[0] = 0;
+    u_port->rx_buffer[1] = 0;
+    u_port->rx_buffer[2] = 0;
+    u_port->updated = 0;
 }
 
 void sendData(uart_port* uart, uint8_t data) {
@@ -20,6 +16,7 @@ void getData(uart_port* uart, uint8_t* data) {
     for (int i = 0; i < 2; i++) {
         *(data + i) = uart->rx_buffer[i];
     }
+		uart->updated = 0;
 }
 
 int isDataUpdated(uart_port* uart) {

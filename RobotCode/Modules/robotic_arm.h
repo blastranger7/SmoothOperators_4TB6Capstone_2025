@@ -11,7 +11,7 @@ typedef enum {ready, busy, task_done} status;
 
 typedef struct {
     s_motor* base;
-    s_motor joints[3];
+    s_motor* joints[3];
     uart_port* ui_port;
     uart_port* object_port;
     state system_state;
@@ -19,10 +19,10 @@ typedef struct {
     uint8_t ui_data[3];
     uint8_t object_data[3];
 
-} system;
+} r_system;
 
-system initSystem(TIM_HandleTypeDef* timer, UART_HandleTypeDef* uart_ui, UART_HandleTypeDef* uart_object);
-void runState(system* robot_system);
-void updateState(system* robot_system);
+r_system initSystem(TIM_HandleTypeDef* timer, uart_port* uart_ui, uart_port* uart_object);
+void runState(r_system* robot_system);
+void updateState(r_system* robot_system);
 
 #endif
