@@ -12,7 +12,6 @@ r_system initSystem(TIM_HandleTypeDef* timer, uart_port* uart_ui, uart_port* uar
 
     //init motors
     robot_system.base = malloc(sizeof(s_motor));
-
     robot_system.joints[0] = malloc(sizeof(s_motor));
     robot_system.joints[1] = malloc(sizeof(s_motor));
     robot_system.joints[2] = malloc(sizeof(s_motor));
@@ -30,14 +29,14 @@ r_system initSystem(TIM_HandleTypeDef* timer, uart_port* uart_ui, uart_port* uar
 
     //init buffers
     robot_system.ui_data[0] = 0;
-		robot_system.ui_data[1] = 0;
-		robot_system.ui_data[2] = 0;
+	robot_system.ui_data[1] = 0;
+	robot_system.ui_data[2] = 0;
 		
     robot_system.object_data[0] = 0;
-		robot_system.object_data[1] = 0;
-		robot_system.object_data[2] = 0;
+	robot_system.object_data[1] = 0;
+	robot_system.object_data[2] = 0;
 		
-		return robot_system;
+	return robot_system;
 }
 
 static void setStatus(r_system* robot_system, status new_status) {
@@ -55,18 +54,18 @@ static void rest(r_system* robot_system) {
 static void returnHome(r_system* robot_system) {
     //reset the gripper and base positions
 //    moveGripper(robot_system->joints, rest_pos_x, rest_pos_y);
-		setMotorPosition(robot_system->joints, 0);
+	setMotorPosition(robot_system->joints, 0);
     moveBase(robot_system->base, rest_angle);
 }
 
 static void scanWorkspace(r_system* robot_system) {
     //sweep the base along its range, reset it, and update object data
     moveBase(robot_system->base, 90);
-		HAL_Delay(2000);
-		moveBase(robot_system->base, -90);
-		HAL_Delay(2000);
-		moveBase(robot_system->base, 0);
-		HAL_Delay(2000);
+	// HAL_Delay(2000);
+	moveBase(robot_system->base, -90);
+	// HAL_Delay(2000);
+	moveBase(robot_system->base, 0);
+	// HAL_Delay(2000);
 
 //    while (!isDataUpdated(robot_system->object_port)) { continue; }
 //    getData(robot_system->object_port, robot_system->object_data);

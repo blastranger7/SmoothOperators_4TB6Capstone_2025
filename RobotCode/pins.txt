@@ -11,7 +11,7 @@ UART_UI (UART5)
     Rx: PD2
     Tx: PC12
 
-UART_Objectk (UART7)
+UART_Object (UART7)
     Rx: PE7
     Tx: PE8
 
