@@ -1,11 +1,11 @@
 Pins for all peripherals
 
-Motors (TIM1 & TIMx)
+Motors (TIM1 & TIM2)
     (base)      Channel 1: PE9
     (joint 1)   Channel 2: PE11
     (joint 2)   Channel 3: PE13
     (joint 3)   Channel 4: PE14
-    (gripper)   Channel x: P
+    (gripper)   Channel 1: PA5
 
 UART_UI (UART5)
     Rx: PD2
@@ -16,5 +16,5 @@ UART_Object (UART7)
     Tx: PE8
 
 Force Sensors
-    A: P
-    B: P
+    A: PB0
+    B: PB1
