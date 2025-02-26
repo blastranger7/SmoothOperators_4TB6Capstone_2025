@@ -6,7 +6,7 @@ const int rest_pos_y = 15;
 const int can_height = 10;
 const int rest_angle = 0;
 
-r_system initSystem(TIM_HandleTypeDef* timer, uart_port* uart_ui, uart_port* uart_object) {
+r_system initSystem(TIM_HandleTypeDef* timer_a, r_gripper* gripper, uart_port* uart_ui, uart_port* uart_object) {
     r_system robot_system;
     uint32_t joint_channels[3] = {TIM_CHANNEL_2, TIM_CHANNEL_3, TIM_CHANNEL_4};
 
@@ -16,9 +16,12 @@ r_system initSystem(TIM_HandleTypeDef* timer, uart_port* uart_ui, uart_port* uar
     robot_system.joints[1] = malloc(sizeof(s_motor));
     robot_system.joints[2] = malloc(sizeof(s_motor));
 		
-    initBase(timer, TIM_CHANNEL_1, robot_system.base);
-    initJoints(robot_system.joints, timer, joint_channels);
+    initBase(timer_a, TIM_CHANNEL_1, robot_system.base);
+    initJoints(robot_system.joints, timer_a, joint_channels);
     
+    //init gripper
+    robot_system.gripper = gripper;
+
     //init serial ports
     robot_system.ui_port = uart_ui;
     robot_system.object_port = uart_object;

@@ -5,11 +5,10 @@
 #include "stm32f4xx_hal_gpio.h"
 
 typedef struct {
-    GPIO_TypeDef* GPIOx; 
-    uint16_t GPIO_Pin;
-    float reading;
-} f_sensor;
+    ADC_HandleTypeDef* adc;
+    uint16_t[2] readings;
+} f_sensor_pair;
 
-void getForceReading(f_sensor* sensor);
+uint16_t getForceReading(f_sensor_pair* sensors, int direction);
 
 #endif

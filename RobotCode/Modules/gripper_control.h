@@ -6,11 +6,12 @@
 
 typedef struct {
     s_motor* motor;
-    f_sensor* l_sensor;
-    f_sensor* r_sensor;
+    f_sensor_pair* sensors;
+    int position;
+    uint16_t force;
 } r_gripper;
 
-void init_Gripper(r_gripper* gripper, TIM_HandleTypeDef* timer, uint32_t channel, GPIO_HandleTypeDef* l_GPIO, uint16_t l_pin, GPIO_HandleTypeDef* r_GPIO, uint16_t r_pin);
+void initGripper(r_gripper* gripper, TIM_HandleTypeDef* timer, uint32_t channel, f_sensor_pair* sensors);
 void openGripper(r_gripper* gripper);
 void closeGripper(r_gripper* gripper);
 

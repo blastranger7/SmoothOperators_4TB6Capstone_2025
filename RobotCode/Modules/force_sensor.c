@@ -1,5 +1,5 @@
 #include "force_sensor.h"
 
-void getForceReading(f_sensor* sensor) {
-    sensor->reading = HAL_GPIO_ReadPin(sensor->GPIOx, sensor->GPIO_Pin);
+uint16_t getForceReading(f_sensor_pair* sensors, int direction) {
+    return sensors->readings[direction];
 }
