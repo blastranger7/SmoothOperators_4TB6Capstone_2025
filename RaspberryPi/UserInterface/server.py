@@ -33,6 +33,15 @@ def write_to_file():
         if not isinstance(commands, list):
             return {"error": "Expected a list for 'message'"}, 400
         
+
+        # Actual code starts here
+
+        if commands[0] == "MoveCan":
+            with open('updated_can_state.txt', 'r') as can_file:
+                content = can_file.read()
+            if "e_canInWorkspace" not in content:
+                return {'status': 'error', 'message': 'Can is not in the workspace'}, 500
+        
         formatted_commands = [c_uint8(element) for element in commands]
         
         # Write data to a text file to track most recent changes
@@ -48,9 +57,9 @@ def write_to_file():
         # Send serial data to microcontroller (18 bytes total)
         ser.write(packet)
 
-        # Indicate that state of the can should be updated
-        with open('updated_can_state.txt', 'w') as can_file:
-            can_file.write("Update" + '\n')
+        # # Indicate that state of the can should be updated
+        # with open('updated_can_state.txt', 'w') as can_file:
+        #     can_file.write("Update" + '\n')
         
         # Close serial connection
         ser.close()
