@@ -3,6 +3,7 @@
 
 #include "servo_motor.h"
 #include "force_sensor.h"
+#include <stdlib.h>
 
 typedef struct {
     s_motor* motor;

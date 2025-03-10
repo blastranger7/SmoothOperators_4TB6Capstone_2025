@@ -51,8 +51,9 @@ void moveGripper(s_motor* joints[3], int position_x, int position_y) {
     int distance[3];
     calculateDistance(joints, position_x, position_y, distance);
 
-	//linearly increase/decrease the joint positions until the target is reached
+	//linearly in crease/decrease the joint positions until the target is reached
     while (distance[0] != 0 && distance[1] != 0 && distance[2] != 0) {
+        HAL_Delay(joint_speed);
         for (int i = 0; i < 3; i++) {
             if (distance[i] > 0) {
                 setMotorPosition(joints[i], (joints[i]->current_angle) + step_size_joints);
