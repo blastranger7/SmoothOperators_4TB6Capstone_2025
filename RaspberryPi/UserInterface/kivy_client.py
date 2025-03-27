@@ -23,7 +23,7 @@ class CommandSender(BoxLayout):
         self.add_widget(self.send_button)
 
     def send_command(self, instance):
-        url = "http://169.254.105.113:5000/write"  # Raspberry Pi's IP
+        url = "http://172.17.97.202:5000/write"  # Raspberry Pi's IP
         plain_text = self.input_field.text
         line_data = plain_text.splitlines()
 
