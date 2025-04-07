@@ -6,7 +6,7 @@
 
 typedef struct {
     ADC_HandleTypeDef* adc;
-    uint16_t[2] readings;
+    uint16_t readings[2];
 } f_sensor_pair;
 
 uint16_t getForceReading(f_sensor_pair* sensors, int direction);

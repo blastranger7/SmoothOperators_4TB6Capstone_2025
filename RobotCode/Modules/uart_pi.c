@@ -12,10 +12,10 @@ void sendData(uart_port* uart, uint8_t data) {
     HAL_UART_Transmit_IT(uart->port, &data, 1);
 }
 
-void getData(uart_port* uart, uint8_t* data) {
-    for (int i = 0; i < 2; i++) {
-        *(data + i) = uart->rx_buffer[i];
-    }
+void getData(uart_port* uart, int* data) {
+    data[0] = (int) ((uart->rx_buffer[1] << 8) | uart->rx_buffer[0]);
+		data[1] = (int) ((uart->rx_buffer[3] << 8) | uart->rx_buffer[2]);
+		data[2] = (int) ((uart->rx_buffer[5] << 8) | uart->rx_buffer[4]);
 		uart->updated = 0;
 }
 

@@ -1,19 +1,25 @@
 #include "joint_control.h"
 
 //segment lengths
-static int a_1 = 250;
-static int a_2 = 250;
-static int a_3 = 250;
+static int a_1 = 140;
+static int a_2 = 140;
+static int a_3 = 200;
 
-static int step_size_joints = 1; //joints will move 1 degree per step
-static int joint_speed = 80; //length of the delay between steps
+//joint offsets
+static int offsets[3] = {9, 10, 10};
+
+static int step_size_joints[3] = {1, 1, 1}; //joints will move 1 degree per step
+static int joint_speed[2] = {40, 20}; //length of the delay between steps
 
 void initJoints(s_motor* joints[3], TIM_HandleTypeDef* timer, uint32_t channels[3]) {
     for (int i = 0; i < 3; i++) {
         joints[i]->timer = timer;
         joints[i]->channel = channels[i];
-        joints[i]->current_angle = 0;
     }
+		//65, 119, -54
+		joints[0]->current_angle = 96 + offsets[0];
+		joints[1]->current_angle = 158 + offsets[1];
+		joints[2]->current_angle = -63 + 135 + offsets[2];
 }
 
 static void inverseKinematics(int position_x, int position_y, int* positions) {
@@ -35,14 +41,14 @@ static void inverseKinematics(int position_x, int position_y, int* positions) {
 
     *positions = theta_1;
     *(positions+1) = theta_2_i;
-    *(positions+2) = theta_3;
+    *(positions+2) = theta_3 + 135;
 }
 
 static void calculateDistance(s_motor* joints[3], int position_x, int position_y, int* distances) {
     int target_positions[3];
     inverseKinematics(position_x, position_y, target_positions);
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         *(distances + i) = target_positions[i] - joints[i]->current_angle;
     }
 }
@@ -51,21 +57,61 @@ void moveGripper(s_motor* joints[3], int position_x, int position_y) {
     int distance[3];
     calculateDistance(joints, position_x, position_y, distance);
 
-	//linearly in crease/decrease the joint positions until the target is reached
-    while (distance[0] != 0 && distance[1] != 0 && distance[2] != 0) {
-        HAL_Delay(joint_speed);
-        for (int i = 0; i < 3; i++) {
+		//linearly increase/decrease the joint positions until the target is reached
+    while (distance[0] != 0 || distance[1] != 0) {
+				HAL_Delay(joint_speed[0]);
+				for (int i = 0; i < 2; i++) {
+						int remainder = distance[i] % step_size_joints[i];
             if (distance[i] > 0) {
-                setMotorPosition(joints[i], (joints[i]->current_angle) + step_size_joints);
-                distance[i] -= step_size_joints;
+								if (remainder == 0) {
+										setMotorPosition(joints[i], (joints[i]->current_angle) + step_size_joints[i]);
+										distance[i] -= step_size_joints[i];
+								}
+								else {
+										setMotorPosition(joints[i], (joints[i]->current_angle) + remainder);
+										distance[i] -= remainder;
+								}
             }
             else if (distance[i] < 0) {
-                setMotorPosition(joints[i], (joints[i]->current_angle) - step_size_joints);
-                distance[i] += step_size_joints;
+								if (remainder == 0) {
+										setMotorPosition(joints[i], (joints[i]->current_angle) - step_size_joints[i]);
+										distance[i] += step_size_joints[i];
+								}
+								else {
+										setMotorPosition(joints[i], (joints[i]->current_angle) - remainder);
+										distance[i] += remainder;
+								}
             }
             else {
                 continue;
             }
         }
+    }
+		while (distance[2] != 0) {
+				HAL_Delay(joint_speed[1]);
+				int remainder = distance[2] % step_size_joints[2];
+				if (distance[2] > 0) {
+						if (remainder == 0) {
+								setMotorPosition(joints[2], (joints[2]->current_angle) + step_size_joints[2]);
+								distance[2] -= step_size_joints[2];
+						}
+						else {
+								setMotorPosition(joints[2], (joints[2]->current_angle) + remainder);
+								distance[2] -= remainder;
+						}
+				}
+				else if (distance[2] < 0) {
+						if (remainder == 0) {
+								setMotorPosition(joints[2], (joints[2]->current_angle) - step_size_joints[2]);
+								distance[2] += step_size_joints[2];
+						}
+						else {
+								setMotorPosition(joints[2], (joints[2]->current_angle) - remainder);
+								distance[2] += remainder;
+						}
+				}
+				else {
+						continue;
+				}
     }
 }

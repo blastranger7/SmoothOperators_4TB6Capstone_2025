@@ -1,10 +1,10 @@
 #include "gripper_control.h"
 
 //dummy values
-#define grip_threshold 100
-#define hysteresis_band 50
+#define grip_threshold 0
+#define hysteresis_band 20
 
-static int gripper_step_size = 1;
+static int gripper_step_size = 2;
 static int gripper_speed = 80;
 
 static void updatePosition(r_gripper* gripper) {
@@ -24,7 +24,7 @@ void initGripper(r_gripper* gripper, TIM_HandleTypeDef* timer, uint32_t channel,
 	
     gripper->motor->timer = timer;
     gripper->motor->channel = channel;
-    gripper->motor->current_angle = 0;
+    gripper->motor->current_angle = 235;
 
     //init force sensors
     gripper->sensors = sensors;
@@ -37,9 +37,9 @@ void openGripper(r_gripper* gripper) {
     
     if (gripper->force < grip_threshold) { return; }
     else { //open the gripper until the force is below the threshold
-        while (gripper->force >= grip_threshold) {
+        while (gripper->force >= grip_threshold && gripper->position < 235) {
             HAL_Delay(gripper_speed);
-            setMotorPosition(gripper->motor, gripper->position - gripper_step_size);
+            setMotorPosition(gripper->motor, gripper->position + gripper_step_size);
             updatePosition(gripper);
             updateForce(gripper);
         }
@@ -52,9 +52,9 @@ void closeGripper(r_gripper* gripper) {
 
     if (gripper->force >= (grip_threshold + hysteresis_band)) { return; }
     else { //close the gripper until the force threshold is reached
-        while (gripper->force < (grip_threshold + hysteresis_band)) {
+        while (gripper->force < (grip_threshold + hysteresis_band) && gripper->position > 192) {
             HAL_Delay(gripper_speed);
-            setMotorPosition(gripper->motor, gripper->position + gripper_step_size);
+            setMotorPosition(gripper->motor, gripper->position - gripper_step_size);
             updatePosition(gripper);
             updateForce(gripper);
         }

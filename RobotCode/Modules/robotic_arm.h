@@ -7,8 +7,8 @@
 #include "uart_pi.h"
 
 //enumerations
-typedef enum {resting, return_home, scan_workspace, move_can} state;
-typedef enum {ready, busy, task_done} status;
+typedef enum {resting = 0, return_home = 1, scan_workspace = 2, move_can = 3} state;
+typedef enum {ready = 0, busy = 1, task_done = 2} status;
 
 typedef struct {
     s_motor* base;
@@ -18,11 +18,11 @@ typedef struct {
     uart_port* object_port;
     state system_state;
     status system_status;
-    uint8_t ui_data[3];
-    uint8_t object_data[3];
+    int ui_data[3];
+    int object_data[3];
 } r_system;
 
-r_system initSystem(TIM_HandleTypeDef* timer_a, TIM_HandleTypeDef* timer_b, uart_port* uart_ui, uart_port* uart_object);
+r_system initSystem(TIM_HandleTypeDef* timer_a, TIM_HandleTypeDef* timer_b, f_sensor_pair* sensors, uart_port* uart_ui, uart_port* uart_object);
 void runState(r_system* robot_system);
 void updateState(r_system* robot_system);
 

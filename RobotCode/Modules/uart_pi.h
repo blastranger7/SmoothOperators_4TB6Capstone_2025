@@ -7,13 +7,13 @@
 
 typedef struct {
     UART_HandleTypeDef* port;
-		uint8_t rx_buffer[3];
+		uint8_t rx_buffer[6];
     int updated;
 } uart_port; 
 
 void initUART(UART_HandleTypeDef* uart, uart_port* port);
 void sendData(uart_port* uart, uint8_t data);
-void getData(uart_port* uart, uint8_t* data);
+void getData(uart_port* uart, int* data);
 int isDataUpdated(uart_port* uart);
 
 #endif
